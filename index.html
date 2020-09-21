@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Node.js Server</title>
+    <meta charset="utf-8">
+</head>
+
+<body>
+        <h2>Задания:</h2>
+        <p style= "font-weight: bold";> Задание 1-1 </p>
+        <form method="post" id="frm" action="/zip">
+            <input name="fff" id="fff" type="file">
+            <button id="f2"> Сохранить в архиве </button>
+        </form>
+        <p style= "font-weight: bold";><a href="http://84.38.180.19:4326/pipe"> Задание 1-2 </a></p>
+        <p style= "font-weight: bold";> Задание 1-3 </p>
+        <form method="post" id="frm2" action="/trans">
+            <input name="fff2" id="fff2" type="file">
+            <button id="f3"> Трансформировать и сохранить файл</button>
+        </form>
+        <p style="font-weight: bold" ;><a href="http://84.38.180.19:3000"> Задание 1-4 </a></p>
+        
+        <script>{   
+                const tf = document.querySelectorAll('[type=file]')[0];
+                const tf2 = document.querySelectorAll('[type=file]')[1];
+                document.querySelector('#f2')
+                    .addEventListener('click', e => {
+                        (async () => {
+                            let r = await fetch(document.querySelector('#frm').action, {
+                                method: 'POST',
+                                body: tf.files[0]
+                            });
+
+                            const ext = tf.files[0].name.slice(-4);
+                            const bod = tf.files[0].name.slice(0, tf.files[0].name.length - 4);
+                            const a = document.createElement('a');
+                            a.href = URL.createObjectURL(await r.blob());
+                            a.download = `${bod}${ext}.zip`;
+                            a.click();
+                            a.remove();
+                        })();
+                        e.preventDefault();
+                    });
+                document.querySelector('#f3')
+                            .addEventListener('click', e => {
+                        (async () => {
+                            let r = await fetch(document.querySelector('#frm2').action, {
+                                method: 'POST',
+                                body: tf2.files[0]
+                            });
+
+                            const ext2 = tf2.files[0].name.slice(-4);
+                            const bod2 = tf2.files[0].name.slice(0, tf2.files[0].name.length - 4);
+                            const a = document.createElement('a');
+                            a.href = URL.createObjectURL(await r.blob());
+                            a.download = `${bod2}.txt`;
+                            a.click();
+                            a.remove();
+                        })();
+                        e.preventDefault();
+                    });    
+            }</script>
+</body>
+</html>
